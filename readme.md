@@ -14,6 +14,7 @@ Replace old server with python
 
 ## Data Format
 
+```
 Byte-by-byte Description of file: hip2.dat
 
    Bytes Format Units    Label   Explanations
@@ -45,5 +46,4 @@ Byte-by-byte Description of file: hip2.dat
 24  160-164  F5.3  mag      e_B-V   Formal error on colour index
 25  166-171  F6.3  mag      V-I     V-I colour index
 26  172-276 15F7.2 ---      UW      Upper-triangular weight matrix (G1)
-
- 26 Colmuns
+```
