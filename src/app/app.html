@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>StarGazer</title>
+    <script src="app.min.js"></script>
+
+    <script type="x-shader/x-vertex" id="vertexshader">
+			uniform float amplitude;
+			attribute float size;
+			attribute float magnitude;
+			attribute vec3 customColor;
+			varying vec3 vColor;
+
+			void main() {
+				vColor = customColor;
+				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+				gl_PointSize = (1.0 * log(magnitude)) * (10.0 / sqrt(-mvPosition.z)) + size;
+				gl_Position = projectionMatrix * mvPosition;
+			}
+		</script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+			uniform vec3 color;
+			uniform sampler2D texture;
+			varying vec3 vColor;
+
+			void main() {
+				gl_FragColor = vec4( color * vColor, 1.0 );
+				gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
+			}
+		</script>
+
+    <link rel='shortcut icon' type='image/x-icon' href='img/favicon.ico'/>
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+        }
+        canvas { width: 100%; height: 100% }
+
+        #canvas {
+            display: block;
+        }
+
+        #HUD {
+            color: lavender;
+            font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+            font-size: 24px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: bold;
+            line-height: 26.4px;
+            white-space: nowrap;
+
+            position: fixed;
+            left: 100%;
+            top: 0px;
+            transform: translateX(-100%);
+        }
+
+        .loading {
+            position: absolute;
+            color: lavender;
+            font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+            font-size: 24px;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: 500;
+            line-height: 26.4px;
+
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+    </style>
+</head>
+
+<body ng-app="StarGazer" ng-controller="MapController">
+    <div class="loading" ng-if="!loadingDone">
+        Loading Universe {{getLoaded()}}%
+    </div>
+
+    <div class="loading" ng-if="loadingDone && !creatingDone">
+        Creating Universe {{getCreated()}}%
+    </div>
+
+    <div id="HUD" ng-if="loadingDone">
+        <div ng-click="returnToEarth()">Back To Earth</div>
+        <div ng-repeat="name in constellationNames" ng-click="showConstellation(name)">
+            {{name}}
+        </div>
+    </div>
+</body>
+</html>

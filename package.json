@@ -1,0 +1,27 @@
+{
+  "name": "stargazer",
+  "version": "1.0.0",
+  "description": "Byte-by-byte Description of file: hip2.dat",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/catbrower/StarGazer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/catbrower/StarGazer/issues"
+  },
+  "homepage": "https://gitlab.com/catbrower/StarGazer#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.6.3",
+    "es6-promise-pool": "^2.5.0",
+    "mongodb": "^3.3.3"
+  },
+  "devDependencies": {
+  }
+}
