@@ -1,3 +1,19 @@
+# StarGazer
+
+Project originally written in 2016. Still in the process of converting it to modern packages.
+
+## To Do
+
+Gulp is fubar, replace with webpack
+
+Mongodb module syntax changed, update
+
+Angular is no longer supported, convert to a react project
+
+Replace old server with python
+
+## Data Format
+
 Byte-by-byte Description of file: hip2.dat
 
    Bytes Format Units    Label   Explanations
