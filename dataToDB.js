@@ -248,6 +248,6 @@ MongoClient.connect(DB_CONN_STR, (err, client) => {
         return console.error(err);
     }
 
-    let input = fs.createReadStream('hip2.dat');
+    let input = fs.createReadStream('database/hip2.dat');
     readLines(input, insert, client);
 });
