@@ -1,5 +1,6 @@
 const { src, dest, parallel } = require('gulp');
 const concat = require('gulp-concat');
+const browserify = require('gulp-browserify');
 
 function html(done) {
   return src('src/**/*.html')
@@ -18,8 +19,11 @@ function css(done) {
 function js(done) {
   return src(['src/**/*.js', '!src/dataToDB.js'], { sourcemaps: true })
     .pipe(concat('app.min.js'))
+    .pipe(browserify({
+      insertGlobals : true
+    }))
     .pipe(dest('build/js', { sourcemaps: true }))
-    done()
+    done();
 }
 
 function images(done) {
