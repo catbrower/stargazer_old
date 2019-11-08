@@ -1,14 +1,37 @@
-# StarGazer
+## StarGazer
 
 Star Gazer loads 120k stars from the Hipparcos star catalogue and renders them in a browser. Use WASD and the mouse to move around the galaxy!
 
-## To Do
+# To Do
 
 -Add Earth
 
 -Add a return to earth button
 
 -Improve the way data is loaded from the server
+
+# Requirements
+mongodb, nodejs
+
+# To Run
+
+First install all dependencies with npm or yarn
+
+>npm install
+
+or 
+
+>yarn install
+
+Load all the star data into mongodb.
+
+>node dataToDB.js
+
+Run the server
+
+>node server.js
+
+Finally, navigate to localhost:3000 in browser
 
 ## Data Format
 
