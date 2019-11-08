@@ -1,10 +1,14 @@
 # StarGazer
 
-Project originally written in 2016. Still in the process of converting it to modern packages.
+Star Gazer loads 120k stars from the Hipparcos star catalogue and renders them in a browser. Use WASD and the mouse to move around the galaxy!
 
 ## To Do
 
--
+-Add Earth
+
+-Add a return to earth button
+
+-Improve the way data is loaded from the server
 
 ## Data Format
 
