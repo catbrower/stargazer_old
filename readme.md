@@ -4,11 +4,7 @@ Project originally written in 2016. Still in the process of converting it to mod
 
 ## To Do
 
-Mongodb module syntax changed, update
-
-Angular is no longer supported, convert to a react project
-
-Replace old server with python
+-
 
 ## Data Format
 
