@@ -14,10 +14,10 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/', express.static('dist'));
+app.use('/', express.static('build'));
 
 app.get("/", function(req, res) {
-    res.sendFile(__dirname + "/dist/index.html");
+    res.sendFile(__dirname + "/index.html");
 });
 
 app.get("/api/constellation/:name", function(req, res) {

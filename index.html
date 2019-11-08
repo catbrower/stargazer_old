@@ -1,33 +1,33 @@
 <html>
 <head>
     <title>StarGazer</title>
-    <script src="app.min.js"></script>
+    <script src="js/app.min.js"></script>
 
     <script type="x-shader/x-vertex" id="vertexshader">
-			uniform float amplitude;
-			attribute float size;
-			attribute float magnitude;
-			attribute vec3 customColor;
-			varying vec3 vColor;
+        uniform float amplitude;
+        attribute float size;
+        attribute float magnitude;
+        attribute vec3 customColor;
+        varying vec3 vColor;
 
-			void main() {
-				vColor = customColor;
-				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-				gl_PointSize = (1.0 * log(magnitude)) * (10.0 / sqrt(-mvPosition.z)) + size;
-				gl_Position = projectionMatrix * mvPosition;
-			}
-		</script>
+        void main() {
+            vColor = customColor;
+            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+            gl_PointSize = (1.0 * log(magnitude)) * (10.0 / sqrt(-mvPosition.z)) + size;
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    </script>
 
     <script type="x-shader/x-fragment" id="fragmentshader">
-			uniform vec3 color;
-			uniform sampler2D texture;
-			varying vec3 vColor;
+        uniform vec3 color;
+        uniform sampler2D texture;
+        varying vec3 vColor;
 
-			void main() {
-				gl_FragColor = vec4( color * vColor, 1.0 );
-				gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
-			}
-		</script>
+        void main() {
+            gl_FragColor = vec4( color * vColor, 1.0 );
+            gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
+        }
+    </script>
 
     <link rel='shortcut icon' type='image/x-icon' href='img/favicon.ico'/>
     <style>
