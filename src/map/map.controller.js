@@ -2,8 +2,8 @@
     'use strict';
 
     let THREE = require('three');
-    let FlyControls = require('three-fly-controls')(THREE);
-    let OrbitControls = require('three-orbit-controls')(THREE);
+    require('three-fly-controls')(THREE);
+    require('three-orbit-controls')(THREE);
 
     angular
         .module('StarGazer')
@@ -50,7 +50,6 @@
 
         let sceneLoaded = () => {
             $scope.loadingDone = true;
-            //$("#canvas").css({'display': "block"});
 
             scene.add(constructStars({data: data}, 0.0015));
 
@@ -143,38 +142,6 @@
             );
         };
 
-        let getConstellation = (name, cb) => {
-            $http.get("http://localhost:3000api/constellation/" + name).then(
-                (res) => {
-                    let geometry = new THREE.Geometry();
-                    let material = new THREE.LineBasicMaterial({color: 0xff00ff});
-
-                    let pos = star_system.geometry.attributes.position.array;
-                    res.data.forEach(function(item) {
-                        let i = parseInt(item.starA);
-                        let j = parseInt(item.starB);
-                        let a = {x: pos[i * 3], y: pos[i * 3 + 1], z: pos[i * 3 + 2]};
-                        let b = {x: pos[j * 3], y: pos[j * 3 + 1], z: pos[j * 3 + 2]};
-
-                        geometry.vertices.push(
-                            new THREE.Vector3(a.x, a.y, a.z),
-                            new THREE.Vector3(b.x, b.y, b.z)
-                        );
-                    });
-
-                    let line = new THREE.LineSegments(geometry, material);
-                    line.name = name;
-                    $scope.constellations[name] = {name: name, visible: false, data: line};
-
-                    if(cb) {
-                        cb();
-                    }
-                }, (res) => {
-                    console.error(res);
-                }
-            )
-        };
-
         let loadScene = () => {
             let renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
             renderer.setClearColor (0x000000, 1);
@@ -182,12 +149,14 @@
             document.body.appendChild( renderer.domElement );
 
             // controls
-            window.controls = new FlyControls(camera);
-            window.controls.movementSpeed = 1000;
-            window.controls.domElement = renderer.domElement;
-            window.controls.rollSpeed = Math.PI / 10;
-            window.controls.autoForward = false;
-            window.controls.dragToLook = false;
+            THREE.FlyControls(camera, renderer.domElement);
+            // THREE.OrbitControls(cameraObject, domElement);
+            // window.controls = new FlyControls(camera);
+            // window.controls.movementSpeed = 1000;
+            // window.controls.domElement = renderer.domElement;
+            // window.controls.rollSpeed = Math.PI / 10;
+            // window.controls.autoForward = false;
+            // window.controls.dragToLook = false;
 
             let clock = new THREE.Clock();
             let render = function () {
@@ -195,10 +164,10 @@
 
                 let delta = clock.getDelta();
 
-                // if(controlsOn) {
-                //     window.controls.movementSpeed = 0.33 * scale;
-                //     window.controls.update(delta);
-                // }
+                if(controlsOn) {
+                    // window.controls.movementSpeed = 0.33 * scale;
+                    // window.controls.update(delta);
+                }
 
                 let time = Date.now() * 0.005;
 
