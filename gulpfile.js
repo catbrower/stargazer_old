@@ -2,9 +2,8 @@ const { src, dest, parallel } = require('gulp');
 const concat = require('gulp-concat');
 
 function html(done) {
-//   return src('client/templates/*.pug')
-//     .pipe(pug())
-//     .pipe(dest('build/html'))
+  return src('src/**/*.html')
+    .pipe(dest('build/html'))
     done();
 }
 
@@ -23,7 +22,14 @@ function js(done) {
     done()
 }
 
+function images(done) {
+  return src('src/image/*.*')
+    .pipe(dest('build/images'))
+  done();
+}
+
 exports.js = js;
 exports.css = css;
 exports.html = html;
-exports.default = parallel(html, css, js);
+exports.images = images;
+exports.default = parallel(html, css, js, images);
