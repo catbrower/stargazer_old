@@ -54,15 +54,6 @@
             scene.add(constructStars({data: data}, 0.0015));
 
             loadScene();
-
-            let thing = (index) => {
-                if(index < $scope.constellationNames.length) {
-                    getConstellation($scope.constellationNames[index], () => {thing(index + 1)});
-                }
-            };
-
-            thing(0);
-
         };
 
         let constructStars = (res, size) => {
@@ -149,14 +140,13 @@
             document.body.appendChild( renderer.domElement );
 
             // controls
-            THREE.FlyControls(camera, renderer.domElement);
             // THREE.OrbitControls(cameraObject, domElement);
-            // window.controls = new FlyControls(camera);
-            // window.controls.movementSpeed = 1000;
-            // window.controls.domElement = renderer.domElement;
-            // window.controls.rollSpeed = Math.PI / 10;
-            // window.controls.autoForward = false;
-            // window.controls.dragToLook = false;
+            window.controls = new THREE.FlyControls(camera, renderer.domElement);
+            window.controls.movementSpeed = 1000;
+            window.controls.domElement = renderer.domElement;
+            window.controls.rollSpeed = Math.PI / 10;
+            window.controls.autoForward = false;
+            window.controls.dragToLook = false;
 
             let clock = new THREE.Clock();
             let render = function () {
@@ -165,8 +155,8 @@
                 let delta = clock.getDelta();
 
                 if(controlsOn) {
-                    // window.controls.movementSpeed = 0.33 * scale;
-                    // window.controls.update(delta);
+                    window.controls.movementSpeed = 0.33 * scale;
+                    window.controls.update(delta);
                 }
 
                 let time = Date.now() * 0.005;
