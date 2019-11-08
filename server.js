@@ -2,13 +2,13 @@
  * Created by Cat on 11/29/2016.
  */
 
-var MongoClient = require('mongodb').MongoClient;
-var express = require('express');
+let MongoClient = require('mongodb').MongoClient;
+let express = require('express');
 
 const DB_CONN_STR = "mongodb://localhost:27017/StarGazer";
-var app = new express();
+let app = new express();
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -16,44 +16,49 @@ app.use(function(req, res, next) {
 
 app.use('/', express.static('build'));
 
-app.get("/", function(req, res) {
+app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/api/constellation/:name", function(req, res) {
+app.get("/api/constellation/:name", (req, res) => {
     // Connection URL
-    var url = DB_CONN_STR;
+    let url = DB_CONN_STR;
 
     // Use connect method to connect to the Server
-    MongoClient.connect(url, function (err, db) {
-        var constellation = db.collection("hip_" + req.params.name.toLowerCase() + "_lines");
-        constellation.find({}).toArray(function (err, items) {
+    MongoClient.connect(url, (err, client) => {
+        const db = client.db('hip_stars');
+        const constellation = db.collection("hip_" + req.params.name.toLowerCase() + "_lines");
+        constellation.find({}).toArray((err, items) => {
             res.send(items);
         });
     });
 });
 
-app.get("/api/hip_count", function(req, res) {
+app.get("/api/hip_count", (req, res) => {
     // Use connect method to connect to the Server
-    MongoClient.connect(DB_CONN_STR, function(err, db) {
-        var collection = db.collection('hip_stars');
-        collection.count({}, function(err, count) {
+    MongoClient.connect(DB_CONN_STR, (err, client) => {
+        const db = client.db('hip_stars');
+        const collection = db.collection('stars');
+
+        collection.count({}, (err, count) => {
             res.send("" + count);
         });
     });
 });
 
-app.get("/api/get_hip/:pageSize/:page", function(req, res) {
+app.get("/api/get_hip/:pageSize/:page", (req, res) => {
     // Use connect method to connect to the Server
-    MongoClient.connect(DB_CONN_STR, function(err, db) {
-        var pageSize = parseInt(req.params.pageSize);
-        var page = parseInt(req.params.page);
-        var skip = pageSize * (page - 1);
-        var collection = db.collection('hip_stars');
-        collection.find().skip(skip).limit(pageSize).toArray(function(err, items) {
-            var results = [];
+    MongoClient.connect(DB_CONN_STR, (err, client) => {
+        let pageSize = parseInt(req.params.pageSize);
+        let page = parseInt(req.params.page);
+        let skip = pageSize * (page - 1);
 
-            for(var i = 0; i < items.length; i++) {
+        const db = client.db('hip_stars');
+        const collection = db.collection('stars');
+        collection.find().skip(skip).limit(pageSize).toArray((err, items) => {
+            let results = [];
+
+            for(let i = 0; i < items.length; i++) {
                 try {
                     results[i] = {
                         id: items[i]._id,

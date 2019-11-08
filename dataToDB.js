@@ -171,75 +171,75 @@ function readLines(input, func, client) {
     var remaining = '';
   
     input.on('data', function(data) {
-      remaining += data;
-      var index = remaining.indexOf('\n');
-      while (index > -1) {
-        var line = remaining.substring(0, index);
-        remaining = remaining.substring(index + 1);
-        func(line, collection);
-        index = remaining.indexOf('\n');
-      }
+        remaining += data;
+        var index = remaining.indexOf('\n');
+        while (index > -1) {
+            var line = remaining.substring(0, index);
+            remaining = remaining.substring(index + 1);
+            func(line, collection);
+            index = remaining.indexOf('\n');
+        }
     });
   
     input.on('end', function() {
-      if (remaining.length > 0) {
-        func(remaining, collection);
-        client.close();
-      } else {
-          client.close();
-      }
+        if (remaining.length > 0) {
+            func(remaining, collection);
+            client.close();
+        } else {
+            client.close();
+        }
     });
-  }
+}
   
-  function insert(line, collection) {
-        //Clean data
-        let re = /[^0-9\\.\\-]+/g;
-        let items = line.trim().split(re);
-        //Get Colour
-        let colours = bvToRgb(items[23]);
+function insert(line, collection) {
+    //Clean data
+    let re = /[^0-9\\.\\-]+/g;
+    let items = line.trim().split(re);
+    //Get Colour
+    let colours = bvToRgb(items[23]);
 
-        //Calculate x y z. Units in parsecs
-        // This is essentially a conversion from polar to cartesian coordinates
-        // Where:
-        // d = distance in parsecs
-        // ra = right ascention
-        // dec = declination
-        // x, y, z = cartesian coordinates of star
-        let d = 1.0 / parseFloat(items[6]);
-        let ra = parseFloat(items[4]);
-        let de = parseFloat(items[5]);
-        let x = (d * Math.cos(de)) * Math.cos(ra);
-        let y = (d * Math.cos(de)) * Math.sin(ra);
-        let z = d * Math.sin(de);
+    //Calculate x y z. Units in parsecs
+    // This is essentially a conversion from polar to cartesian coordinates
+    // Where:
+    // d = distance in parsecs
+    // ra = right ascention
+    // dec = declination
+    // x, y, z = cartesian coordinates of star
+    let d = 1.0 / parseFloat(items[6]);
+    let ra = parseFloat(items[4]);
+    let de = parseFloat(items[5]);
+    let x = (d * Math.cos(de)) * Math.cos(ra);
+    let y = (d * Math.cos(de)) * Math.sin(ra);
+    let z = d * Math.sin(de);
 
-        collection.insertOne({
-            _id: items[0],
-            x: x,
-            y: y,
-            z: z,
-            r: colours[0],
-            g: colours[1],
-            b: colours[2],
-            RA: items[4],
-            DE: items[5],
-            Plx: items[6],
-            pmRA: items[7],
-            pmDE: items[8],
-            e_RArad: items[9],
-            e_DErad: items[10],
-            e_Plx: items[11],
-            e_pmRA: items[12],
-            e_pmDE: items[13],
-            Hpmag: items[19],
-            e_Hpmag: items[20],
-            sHp: items[21],
-            B_V: items[23],
-            e_B_V: items[24],
-            V_I: items[25]
-        });
+    collection.insertOne({
+        _id: items[0],
+        x: x,
+        y: y,
+        z: z,
+        r: colours[0],
+        g: colours[1],
+        b: colours[2],
+        RA: items[4],
+        DE: items[5],
+        Plx: items[6],
+        pmRA: items[7],
+        pmDE: items[8],
+        e_RArad: items[9],
+        e_DErad: items[10],
+        e_Plx: items[11],
+        e_pmRA: items[12],
+        e_pmDE: items[13],
+        Hpmag: items[19],
+        e_Hpmag: items[20],
+        sHp: items[21],
+        B_V: items[23],
+        e_B_V: items[24],
+        V_I: items[25]
+    });
 
-        printHelper(parseInt(items[0] / 120404 * 10000 / 100))
-  }
+    printHelper(parseInt(items[0] / 120404 * 10000 / 100))
+}
 
 // Connection URL
 // Use connect method to connect to the Server
