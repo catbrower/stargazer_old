@@ -20,27 +20,13 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
-app.get("/api/constellation/:name", (req, res) => {
-    // Connection URL
-    let url = DB_CONN_STR;
-
-    // Use connect method to connect to the Server
-    MongoClient.connect(url, (err, client) => {
-        const db = client.db('hip_stars');
-        const constellation = db.collection("hip_" + req.params.name.toLowerCase() + "_lines");
-        constellation.find({}).toArray((err, items) => {
-            res.send(items);
-        });
-    });
-});
-
 app.get("/api/hip_count", (req, res) => {
     // Use connect method to connect to the Server
-    MongoClient.connect(DB_CONN_STR, (err, client) => {
+    MongoClient.connect(DB_CONN_STR, { useUnifiedTopology: true },(err, client) => {
         const db = client.db('hip_stars');
         const collection = db.collection('stars');
 
-        collection.count({}, (err, count) => {
+        collection.countDocuments({}, (err, count) => {
             res.send("" + count);
         });
     });
@@ -48,7 +34,7 @@ app.get("/api/hip_count", (req, res) => {
 
 app.get("/api/get_hip/:pageSize/:page", (req, res) => {
     // Use connect method to connect to the Server
-    MongoClient.connect(DB_CONN_STR, (err, client) => {
+    MongoClient.connect(DB_CONN_STR, { useUnifiedTopology: true }, (err, client) => {
         let pageSize = parseInt(req.params.pageSize);
         let page = parseInt(req.params.page);
         let skip = pageSize * (page - 1);
