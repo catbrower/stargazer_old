@@ -155,8 +155,7 @@ function bvToRgb(bv) {
 }
 
 function printHelper(loaded) {
-    let barLength = 20;
-    process.stdout.clearLine();  // clear current text
+    process.stdout.clearLine();
     process.stdout.cursorTo(0);
     process.stdout.write(`Loading ${loaded}%`);
 }

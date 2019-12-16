@@ -1,17 +1,22 @@
 import React from 'react';
-import THREE from 'three';
-
+const THREE = require('three');
 
 class StarMap extends React.Component {
-    constructor() {
-        let controlsOn = true;
-        let scale = 100;
-        let pageSize = 1000;
-        let data = [];
-        let star_system;
-        let loaded, loadedTotal, created, createdTotal;
-        let scene = new THREE.Scene();
-        let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    constructor(props) {
+        super(props);
+        this.canvasRef = React.createRef();
+        this.controlsOn = true;
+        this.scale = 100;
+        this.data = [];
+        // this.star_system;
+        // let loaded, loadedTotal, created, createdTotal;
+        this.renderer = new THREE.WebGLRenderer({antialias: true});
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    }
+
+    componentDidMount() {
+        this.canvasRef.current.appendChild(this.renderer.domElement);
     }
 
     constructStars = (res, size) => {
@@ -37,9 +42,9 @@ class StarMap extends React.Component {
 
         for(let i = 0; i < res.data.length; i++) {
             let star = res.data[i];
-            vertex.x = star.x * scale;
-            vertex.y = star.y * scale;
-            vertex.z = star.z * scale;
+            vertex.x = star.x * this.scale;
+            vertex.y = star.y * this.scale;
+            vertex.z = star.z * this.scale;
             color.setRGB(star.r / 255.0, star.g / 255.0, star.b / 255.0);
             magnitudes[i] = star.Hpmag;
             sizes[i] = 0.2;
@@ -67,17 +72,14 @@ class StarMap extends React.Component {
             transparent:    true
         });
 
-        star_system = new THREE.Points(star_system_geo, material);
-
-        $scope.creatingDone = true;
-        return star_system;
+        return new THREE.Points(star_system_geo, material);
     }
 
     render() {
         return (
-            <div>
-
-            </div>
+            <div ref={this.canvasRef}></div>
         );
     }
 }
+
+export default StarMap;
