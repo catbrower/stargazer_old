@@ -14,8 +14,6 @@ Star Gazer loads 120k stars from the Hipparcos star catalogue and renders them i
 
 -Cache star data
 
--Fix controls
-
 -Be responsive
 
 See tickets for more detail
