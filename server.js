@@ -46,7 +46,7 @@ MongoClient.connect(DB_CONN_STR, {useUnifiedTopology: true}, async (err, client)
             if(err) throw err;
 
             const db = client.db('hip_stars');
-            let query = db.collection('stars').find();
+            let query = db.collection('stars').find({}, {x: 1, y: 1, z: 1, r: 1, g: 1, b: 1, Hpmag: 1});
             query.stream().on("data", (d) => {ws.send(JSON.stringify(d))});
             query.stream().on("end", () => {ws.close()});
         } catch(error) {
