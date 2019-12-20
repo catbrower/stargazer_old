@@ -49,6 +49,9 @@ class StarMap extends React.Component {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
+        //Controls
+        
+
         this.camera.position.z = 5;
         this.scene.add(this.stars);
         this.canvasRef.current.appendChild(this.renderer.domElement);
