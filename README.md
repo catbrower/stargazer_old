@@ -1,68 +1,80 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## StarGazer
 
-## Available Scripts
+Star Gazer loads 120k stars from the Hipparcos star catalogue and renders them in a browser. Use WASD and the mouse to move around the galaxy!
 
-In the project directory, you can run:
+# To Do
 
-### `yarn start`
+-Add Earth
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+-Add a return to earth button
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+-Correct missing data issue, might require rebuilding DB :(
 
-### `yarn test`
+-Add nice intro page explaining things
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-Cache star data
 
-### `yarn build`
+-Fix controls
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-Be responsive
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+See tickets for more detail
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Requirements
+mongodb, nodejs
 
-### `yarn eject`
+# To Run
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+First install all dependencies with npm or yarn
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+>npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+or 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+>yarn install
 
-## Learn More
+Load all the star data into mongodb.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+>node dataToDB.js
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Run the server
 
-### Code Splitting
+>node server.js
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Finally, navigate to localhost:3000 in browser
 
-### Analyzing the Bundle Size
+## Data Format
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```
+Byte-by-byte Description of file: hip2.dat
 
-### Making a Progressive Web App
+   Bytes Format Units    Label   Explanations
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+0   1-  6  I6    ---      HIP     Hipparcos identifier
+1   8- 10  I3    ---      Sn      [0,159] Solution type new reduction (1)
+2      12  I1    ---      So      [0,5] Solution type old reduction (2)
+3      14  I1    ---      Nc      Number of components
+4   16- 28 F13.10 rad      RArad   Right Ascension in ICRS, Ep=1991.25
+5   30- 42 F13.10 rad      DErad   Declination in ICRS, Ep=1991.25
+6   44- 50  F7.2  mas      Plx     Parallax
+7   52- 59  F8.2  mas/yr   pmRA    Proper motion in Right Ascension
+8   61- 68  F8.2  mas/yr   pmDE    Proper motion in Declination
+9   70- 75  F6.2  mas     e_RArad  Formal error on RArad
+10  77- 82  F6.2  mas     e_DErad  Formal error on DErad
+11  84- 89  F6.2  mas      e_Plx   Formal error on Plx
+12  91- 96  F6.2  mas/yr   e_pmRA  Formal error on pmRA
+13  98-103  F6.2  mas/yr   e_pmDE  Formal error on pmDE
+14  105-107  I3    ---      Ntr     Number of field transits used
+15  109-113  F5.2  ---      F2      Goodness of fit
+16  115-116  I2    %        F1      Percentage rejected data
+17  118-123  F6.1  ---      var     Cosmic dispersion added (stochastic solution)
+18  125-128  I4    ---      ic      Entry in one of the suppl.catalogues
+19  130-136  F7.4  mag      Hpmag   Hipparcos magnitude
+20  138-143  F6.4  mag     e_Hpmag  Error on mean Hpmag
+21  145-149  F5.3  mag      sHp     Scatter of Hpmag
+22  151  I1    ---      VA      [0,2] Reference to variability annex
+23  153-158  F6.3  mag      B-V     Colour index
+24  160-164  F5.3  mag      e_B-V   Formal error on colour index
+25  166-171  F6.3  mag      V-I     V-I colour index
+26  172-276 15F7.2 ---      UW      Upper-triangular weight matrix (G1)
+```
