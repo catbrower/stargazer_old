@@ -95,7 +95,10 @@ class StarMap extends React.Component {
         color.setRGB(star.r / 255.0, star.g / 255.0, star.b / 255.0);
         color.toArray(this.colors, index * 3);
 
-        this.magnitudes[this.starsLoaded] = star.Hpmag;
+        //I'm assuming Hpmag is apparent mag and convert it to absolute mag
+        // this.magnitudes[this.starsLoaded] = star.Hpmag;
+        this.magnitudes[this.starsLoaded] = star.Hpmag - 5 * Math.log(star.Plx)
+
         this.geometry.attributes.position.needsUpdate = true;
         this.geometry.attributes.customColor.needsUpdate = true;
         this.geometry.setDrawRange(0, ++this.starsLoaded);
