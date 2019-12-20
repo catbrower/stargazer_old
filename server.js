@@ -7,8 +7,9 @@ let express = require('express');
 
 const DB_CONN_STR = "mongodb://localhost:27017/StarGazer";
 const PORT = 3001;
-const STAR_COUNT = 120404;
+
 let app = new express();
+let expressWs = require('express-ws')(app);
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -32,23 +33,22 @@ MongoClient.connect(DB_CONN_STR, {useUnifiedTopology: true}, async (err, client)
             const collection = db.collection('stars');
 
             collection.countDocuments({}, (err, count) => {
-                res.send("" + count);
+                res.send(`${count}`);
             });
         } catch(error) {
             next(error);
         }
     });
 
-    app.get("/api/get_stars", (req, res, next) => {
+    app.ws('/data', (ws, req, next) => {
         try {
             if(!client) throw new Error('Could not connect to db');
             if(err) throw err;
 
             const db = client.db('hip_stars');
             let query = db.collection('stars').find();
-            query.stream().on("data", (d) => {res.write(JSON.stringify(d))});
-            query.stream().on("end", () => {res.end()});
-
+            query.stream().on("data", (d) => {ws.send(JSON.stringify(d))});
+            query.stream().on("end", () => {ws.close()});
         } catch(error) {
             next(error);
         }

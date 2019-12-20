@@ -27,19 +27,16 @@
     <title>Star Gazer</title>
 
     <script type="x-shader/x-vertex" id="vertexshader">
-      uniform float amplitude;
-      attribute float size;
-      attribute float magnitude;
-      attribute vec3 customColor;
-      varying vec3 vColor;
+        attribute vec3 customColor;
+        varying vec3 vColor;
+        attribute float scale;
 
-      void main() {
+			  void main() {
           vColor = customColor;
-          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-          //gl_PointSize = (1.0 * log(magnitude)) * (10.0 / sqrt(-mvPosition.z)) + size;
-          gl_PointSize = magnitude;
-          gl_Position = projectionMatrix * mvPosition;
-      }
+				  vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+				  gl_PointSize = scale * ( 300.0 / - mvPosition.z );
+				  gl_Position = projectionMatrix * mvPosition;
+			  }
     </script>
 
     <script type="x-shader/x-fragment" id="fragmentshader">
@@ -48,8 +45,8 @@
         varying vec3 vColor;
 
         void main() {
-            gl_FragColor = vec4( color * vColor, 1.0 );
-            gl_FragColor = gl_FragColor * texture2D( texture, gl_PointCoord );
+            gl_FragColor = vec4(color * vColor.xyz, 1.0);
+            gl_FragColor = gl_FragColor * texture2D(texture, gl_PointCoord);
         }
     </script>
   </head>
