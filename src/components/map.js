@@ -1,6 +1,7 @@
 import React from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-const THREE = require('three');
+import * as THREE from 'three';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 require('three-orbit-controls')(THREE);
 
 const client = new W3CWebSocket('ws://localhost:3001/data');
@@ -10,7 +11,7 @@ class StarMap extends React.Component {
         super(props);
         this.controlsOn = true;
         this.scale = 100;
-        this.POINT_LIMIT = 100000;
+        this.POINT_LIMIT = 0;
         this.starsLoaded = 0;
         this.magnitudeAdjust = 1.25;
         this.canvasRef = React.createRef();
@@ -50,12 +51,11 @@ class StarMap extends React.Component {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-        //Controls
-
-
         this.camera.position.z = 5;
         this.scene.add(this.stars);
         this.canvasRef.current.appendChild(this.renderer.domElement);
+
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
         this.onWindowResize();
         this.animate();
@@ -106,6 +106,7 @@ class StarMap extends React.Component {
 
     animate = () => {
         requestAnimationFrame(this.animate);
+        this.controls.update();
 	    this.renderer.render(this.scene, this.camera);
     }
 
