@@ -2,7 +2,6 @@ import React from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
-require('three-orbit-controls')(THREE);
 
 const client = new W3CWebSocket('ws://localhost:3001/data');
 
@@ -10,10 +9,10 @@ class StarMap extends React.Component {
     constructor(props) {
         super(props);
         this.controlsOn = true;
-        this.scale = 100;
+        this.scale = 10;
         this.POINT_LIMIT = 0;
         this.starsLoaded = 0;
-        this.magnitudeAdjust = 1.25;
+        this.magnitudeAdjust = 1;
         this.canvasRef = React.createRef();
     }
 
