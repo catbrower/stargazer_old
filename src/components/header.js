@@ -11,17 +11,23 @@ class Header extends React.Component {
         const {t} = this.props;
 
         return (
-            <nav class="deep-purple darken-2" role="navigation">
+            <nav class="deep-purple darken-2 white-text" role="navigation">
                 <div class="nav-wrapper container">
-                    <a id="logo-container" href="#" class="brand-logo white-text"></a>
+                    <a id="logo-container" href="#" class="brand-logo"></a>
                     <ul class="right hide-on-med-and-down">
-                        <li><a href="/map">{t('header.map')}</a></li>
+                        <li><a href="/map" class="white-text">{t('header.map')}</a></li>
                     </ul>
+                    
 
                     <ul id="nav-mobile" ref={(sidenav) => {this.sidenav = sidenav}} class="sidenav">
-                        <li><a href="/map">{t('header.map')}</a></li>
+                        <li><a href="/map" class="white-text">{t('header.map')}</a></li>
                     </ul>
-                    <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons white-text">{t('header.manu')}</i></a>
+
+                    <a href="#" data-target="nav-mobile" class="sidenav-trigger">
+                        <i class="material-icons">
+                            menu
+                        </i>
+                    </a>
                 </div>
             </nav>
         )

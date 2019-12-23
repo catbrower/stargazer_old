@@ -27,7 +27,7 @@
     -->
     <title>Star Gazer</title>
 
-    <script type="x-shader/x-vertex" id="vertexshader">
+    <script type="x-shader/x-vertex" id="star_vertex_shader">
         attribute vec3 customColor;
         varying vec3 vColor;
         attribute float scale;
@@ -40,7 +40,7 @@
 			  }
     </script>
 
-    <script type="x-shader/x-fragment" id="fragmentshader">
+    <script type="x-shader/x-fragment" id="star_fragment_shader">
         uniform vec3 color;
         uniform sampler2D texture;
         varying vec3 vColor;

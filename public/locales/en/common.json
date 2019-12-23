@@ -4,7 +4,24 @@
         "menu": "Menu"
     },
     "home": {
-        "title": "StarGazer"
+        "description": "An interactive 3D atlas of the galaxy",
+        "title": "StarGazer",
+        "point1": {
+            "title": "Data",
+            "description": "Our data is collected from the Hipparcos space mission. Hipparcos was a space mission launched by the European Space Agency and operated from 1989 to 1993. It was the first space mission dedicated solely to precision astronomy, and the accurate measuremnt of parallax."
+        },
+        "point2": {
+            "title": "Calculations",
+            "description": "Star positions are measure with two values, Right Ascension, and Declination. These values work in the same way as longitude and latitude except that they measure positions in the sky insead of on earth. When this is combined with Hipparcos' accurate distance information, the x, y, z positions of stars can be calculated."
+        },
+        "point3": {
+            "title": "The Future",
+            "description": "Since the Hipparcos mission, the ESA has launched another, and much gander, space mission. The Gaia satellite has collected a vastly larger amount of information. Our ultimate goal is to replace out Hipparcos data with that of Gaia, allowing us to create an even larger model of our galaxy."
+        },
+        "hipparcos": {
+            "title": "The Hipparcos Mission",
+            "description": ""
+        }
     },
     "error": {
         "connection": "Failed to connect to server"

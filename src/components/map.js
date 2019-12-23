@@ -1,9 +1,8 @@
 import React from 'react';
-import {withTranslation} from 'react-i18next';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
-import M from 'materialize-css';
+require('three-orbit-controls')(THREE);
 
 const client = new W3CWebSocket('ws://localhost:3001/data');
 
@@ -11,10 +10,10 @@ class StarMap extends React.Component {
     constructor(props) {
         super(props);
         this.controlsOn = true;
-        this.scale = 10;
-        this.POINT_LIMIT = 0;
+        this.scale = 100;
+        this.POINT_LIMIT = 100000;
         this.starsLoaded = 0;
-        this.magnitudeAdjust = 1;
+        this.magnitudeAdjust = 1.25;
         this.canvasRef = React.createRef();
     }
 
@@ -41,8 +40,8 @@ class StarMap extends React.Component {
                 color:     {value: new THREE.Color(0xffffff)},
                 texture:   {value: new THREE.TextureLoader().load("lensflare3.png")}
             },
-            vertexShader:   document.getElementById('vertexshader').textContent,
-            fragmentShader: document.getElementById('fragmentshader').textContent,
+            vertexShader:   document.getElementById('star_vertex_shader').textContent,
+            fragmentShader: document.getElementById('star_fragment_shader').textContent,
             blending:       THREE.AdditiveBlending,
             depthTest:      false,
             transparent:    true
@@ -56,20 +55,17 @@ class StarMap extends React.Component {
         this.scene.add(this.stars);
         this.canvasRef.current.appendChild(this.renderer.domElement);
 
-        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        if(!this.props.disableControls) {
+            this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        }
 
         this.onWindowResize();
         this.animate();
     }
 
-    componentDidMount() {
-        const {t} = this.props;
-        fetch('http://localhost:3001/api/hip_count')
-        .then(response => {
-            if(!Response.ok) {
-                throw Error(response.statusText);
-            }
-            return response.json();
+    getDataFromBackend() {
+        fetch('http://localhost:3001/api/hip_count').then(results => {
+            return results.json();
         }).then(data => {
             this.POINT_LIMIT = data;
             this.initGeometry();
@@ -83,9 +79,27 @@ class StarMap extends React.Component {
                     this.addStar(JSON.parse(message.data));
                 }
             }
-        }).catch(error => {
-            M.toast({html: t(`error.connection`), classes: 'red'});
         });
+    }
+
+    componentDidMount() {
+        if(this.props.useRandomData) {
+            this.initGeometry();
+
+            for(let i = 0; i < this.POINT_LIMIT; i++) {
+                this.addStar({
+                    x: (Math.random() - 0.5) / 10,
+                    y: (Math.random() - 0.5) / 10,
+                    z: (Math.random() - 0.5) / 10,
+                    r: 255,
+                    g: 255,
+                    b: 255,
+                    Hpmag: 10
+                });
+            }
+        } else {
+            this.getDataFromBackend();
+        }
     }
 
     onWindowResize = () => {
@@ -114,7 +128,11 @@ class StarMap extends React.Component {
 
     animate = () => {
         requestAnimationFrame(this.animate);
-        this.controls.update();
+
+        if(!this.props.disableControls) {
+            this.controls.update();
+        }
+        
 	    this.renderer.render(this.scene, this.camera);
     }
 
@@ -125,4 +143,4 @@ class StarMap extends React.Component {
     }
 }
 
-export default withTranslation('common')(StarMap);
+export default StarMap;
