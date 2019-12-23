@@ -1,7 +1,9 @@
 import React from 'react';
+import {withTranslation} from 'react-i18next';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
+import M from 'materialize-css';
 
 const client = new W3CWebSocket('ws://localhost:3001/data');
 
@@ -61,8 +63,13 @@ class StarMap extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:3001/api/hip_count').then(results => {
-            return results.json();
+        const {t} = this.props;
+        fetch('http://localhost:3001/api/hip_count')
+        .then(response => {
+            if(!Response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
         }).then(data => {
             this.POINT_LIMIT = data;
             this.initGeometry();
@@ -76,6 +83,8 @@ class StarMap extends React.Component {
                     this.addStar(JSON.parse(message.data));
                 }
             }
+        }).catch(error => {
+            M.toast({html: t(`error.connection`), classes: 'red'});
         });
     }
 
@@ -116,4 +125,4 @@ class StarMap extends React.Component {
     }
 }
 
-export default StarMap;
+export default withTranslation('common')(StarMap);

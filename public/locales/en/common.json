@@ -1,0 +1,12 @@
+{
+    "header": {
+        "map": "Map",
+        "menu": "Menu"
+    },
+    "home": {
+        "title": "StarGazer"
+    },
+    "error": {
+        "connection": "Failed to connect to server"
+    }
+}
