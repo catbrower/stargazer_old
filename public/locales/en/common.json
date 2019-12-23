@@ -21,7 +21,8 @@
         "hipparcos": {
             "title": "The Hipparcos Mission",
             "description": ""
-        }
+        },
+        "view": "View the star atlas"
     },
     "error": {
         "connection": "Failed to connect to server"

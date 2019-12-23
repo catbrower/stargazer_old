@@ -26,9 +26,11 @@ class Home extends React.Component {
                     <div class="section no-pad-bot">
                         <div class="container">
                             <br/><br/>
-                            <h1 class="header center">{t('home.title')}</h1>
-                            <div class="row center">
-                                <h5 class="header col s12 light">{t('home.description')}</h5>
+                            <div class="black shadow-container">
+                                <h1 class="header center">{t('home.title')}</h1>
+                                <div class="row center">
+                                    <h5 class="header col s12 light">{t('home.description')}</h5>
+                                </div>
                             </div>
                             <br/><br/>
                         </div>
@@ -38,7 +40,7 @@ class Home extends React.Component {
             
                 <div class="container">
                     <div class="section">
-                        <div class="row">
+                        <div class="row black shadow-container">
                             <div class="col s12 m4">
                                 <div class="icon-block">
                                     <h2 class="center deep-purple-text darken-2"><i class="material-icons">flash_on</i></h2>
@@ -71,7 +73,7 @@ class Home extends React.Component {
                         <div class="container">
                             <div class="row center">
                                 <h5 class="header col s12 light">
-                                    <a href="/map" class="waves-effect waves-light btn">View the star atlas</a>
+                                    <a href="/map" class="waves-effect waves-light btn deep-purple darken-2">{t('home.view')}</a>
                                 </h5>
                             </div>
                         </div>
