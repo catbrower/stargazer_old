@@ -16,11 +16,13 @@ class Header extends React.Component {
                     <a id="logo-container" href="#" class="brand-logo"></a>
                     <ul class="right hide-on-med-and-down">
                         <li><a href="/map" class="white-text">{t('header.map')}</a></li>
+                        <li><a href="/" class="white-text">{t('header.home')}</a></li>
                     </ul>
                     
 
                     <ul id="nav-mobile" ref={(sidenav) => {this.sidenav = sidenav}} class="sidenav">
-                        <li><a href="/map" class="white-text">{t('header.map')}</a></li>
+                        <li><a href="/map" class="black-text">{t('header.map')}</a></li>
+                        <li><a href="/" class="black-text">{t('header.home')}</a></li>
                     </ul>
 
                     <a href="#" data-target="nav-mobile" class="sidenav-trigger">

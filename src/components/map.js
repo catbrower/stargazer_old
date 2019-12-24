@@ -10,10 +10,11 @@ class StarMap extends React.Component {
     constructor(props) {
         super(props);
         this.controlsOn = true;
-        this.scale = 100;
-        this.POINT_LIMIT = 100000;
+        this.scale = 1000;
+        this.POINT_LIMIT = 10000;
+        this.minimumDistance = 0.1;
         this.starsLoaded = 0;
-        this.magnitudeAdjust = 1.25;
+        this.magnitudeAdjust = 0.5;
         this.canvasRef = React.createRef();
     }
 
@@ -51,7 +52,7 @@ class StarMap extends React.Component {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-        this.camera.position.z = 5;
+        this.camera.position.z = this.minimumDistance;
         this.scene.add(this.stars);
         this.canvasRef.current.appendChild(this.renderer.domElement);
 
@@ -61,6 +62,15 @@ class StarMap extends React.Component {
 
         this.onWindowResize();
         this.animate();
+    }
+
+    //Convert polar coordinates, ra dec plx to euclidean x y z
+    convertCoords(ra, dec, plx) {
+
+    }
+
+    distance(x, y, z) {
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     }
 
     getDataFromBackend() {
@@ -76,7 +86,12 @@ class StarMap extends React.Component {
     
             client.onmessage = (message) => {
                 if(this.starsLoaded < this.POINT_LIMIT) {
-                    this.addStar(JSON.parse(message.data));
+                    const star = JSON.parse(message.data);
+                    if(star.x && this.distance(star.x, star.y, star.z) > this.minimumDistance) {
+                        this.addStar(star);
+                    } else {
+                        // console.log(star._id)
+                    }
                 }
             }
         });
@@ -94,7 +109,7 @@ class StarMap extends React.Component {
                     r: 255,
                     g: 255,
                     b: 255,
-                    Hpmag: 10
+                    Hpmag: 1
                 });
             }
         } else {
@@ -119,10 +134,11 @@ class StarMap extends React.Component {
         color.toArray(this.colors, index * 3);
 
         //I'm assuming Hpmag is apparent mag and convert it to absolute mag
-        this.magnitudes[this.starsLoaded] = this.magnitudeAdjust * (star.Hpmag - 5 * Math.log(star.Plx))
+        this.magnitudes[this.starsLoaded] = star.Hpmag * this.magnitudeAdjust;
 
         this.geometry.attributes.position.needsUpdate = true;
         this.geometry.attributes.customColor.needsUpdate = true;
+        this.geometry.attributes.scale.needsUpdate = true;
         this.geometry.setDrawRange(0, ++this.starsLoaded);
     }
 
