@@ -69,8 +69,17 @@ class StarMap extends React.Component {
 
     }
 
-    bvLookup() {
-        
+    bvLookup(bv) {
+        const length = bvTable.bv.length;
+        if(bv >= bvTable.max) {
+            return bvTable.bv[length - 1];
+        } else if(bv <= bvTable.min) {
+            return bvTable.bv[0]
+        } else {
+            const index = Math.floor(bv / bvTable.step);
+            let result = bvTable.bv[index];
+            return result;
+        }
     }
 
     distance(x, y, z) {
@@ -91,7 +100,7 @@ class StarMap extends React.Component {
             client.onmessage = (message) => {
                 if(this.starsLoaded < this.POINT_LIMIT) {
                     const star = JSON.parse(message.data);
-                    if(star.x && this.distance(star.x, star.y, star.z) > this.minimumDistance) {
+                    if(star.B_V && this.distance(star.x, star.y, star.z) > this.minimumDistance) {
                         this.addStar(star);
                     } else {
                         // console.log(star._id)
@@ -110,9 +119,7 @@ class StarMap extends React.Component {
                     x: (Math.random() - 0.5) / 10,
                     y: (Math.random() - 0.5) / 10,
                     z: (Math.random() - 0.5) / 10,
-                    r: 255,
-                    g: 255,
-                    b: 255,
+                    B_V: Math.random() * 5,
                     Hpmag: 1
                 });
             }
@@ -134,7 +141,12 @@ class StarMap extends React.Component {
         this.positions[index + 2] = star.z * this.scale;
 
         let color = new THREE.Color(0xffffff);
-        color.setRGB(star.r / 255.0, star.g / 255.0, star.b / 255.0);
+        let rgb = this.bvLookup(parseFloat(star.B_V));
+        try {
+            color.setRGB(rgb[0] / 255.0, rgb[1] / 255.0, rgb[2] / 255.0);
+        } catch {
+            debugger;
+        }
         color.toArray(this.colors, index * 3);
 
         //I'm assuming Hpmag is apparent mag and convert it to absolute mag

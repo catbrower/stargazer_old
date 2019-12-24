@@ -26,7 +26,7 @@ class Header extends React.Component {
                     </ul>
 
                     <a href="#" data-target="nav-mobile" class="sidenav-trigger">
-                        <i class="material-icons">
+                        <i class="material-icons white-text">
                             menu
                         </i>
                     </a>
