@@ -10,7 +10,7 @@ Star Gazer loads 120k stars from the Hipparcos star catalogue and renders them i
 
 -Correct missing data issue, might require rebuilding DB :(
 
--Add nice intro page explaining things
+-Fix rendering issues
 
 -Cache star data
 
