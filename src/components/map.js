@@ -2,7 +2,7 @@ import React from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
-require('three-orbit-controls')(THREE);
+import bvTable from '../data/bvTable';
 
 const client = new W3CWebSocket('ws://localhost:3001/data');
 
@@ -67,6 +67,10 @@ class StarMap extends React.Component {
     //Convert polar coordinates, ra dec plx to euclidean x y z
     convertCoords(ra, dec, plx) {
 
+    }
+
+    bvLookup() {
+        
     }
 
     distance(x, y, z) {
